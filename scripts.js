@@ -16,6 +16,7 @@ function operate(operator, num1, num2) {
     case "+":
       sum(num1, num2);
       break;
+
     case "-":
       subtract(num1, num2);
       break;
