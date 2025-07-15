@@ -14,10 +14,10 @@ function divide(a, b) {
 function operate(operator, num1, num2) {
   switch (operator) {
     case "+":
-      console.log(sum(num1, num2));
+      sum(num1, num2);
       break;
     case "-":
-      console.log(subtract(num1, num2));
+      subtract(num1, num2);
       break;
 
     case "*":
