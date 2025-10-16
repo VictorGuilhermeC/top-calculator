@@ -1,29 +1,23 @@
-const Operation = {
-  currentValue: "",
-  previousValue: "",
-  operator: "",
-  result: "",
-};
+//Variables
 
-const add = (num1, num2) => num1 + num2;
-const subtract = (num1, num2) => num1 - num2;
-const multiply = (num1, num2) => num1 * num2;
-const divide = (num1, num2) => {
-  if (num2 === 0) {
-    reset();
-    return "Can't divide by 0!";
-  }
-  return num1 / num2;
+const Operation = {
+  currentValue: null,
+  previousValue: null,
+  operator: "",
 };
 
 const display = document.querySelector(".display");
 const calculatorButtons = document.querySelector(".calculator-buttons");
 const digits = document.querySelectorAll(".digit");
 const operators = document.querySelectorAll(".operator");
+const clear = document.querySelector("#clear");
+const equal = document.querySelector("#equal");
+
+//Event handlers
 
 calculatorButtons.addEventListener("click", (event) => {
   if (event.target.classList.contains("digit")) {
-    takeNumber(event);
+    updateDisplay(event);
   } else if (event.target.classList.contains("operator")) {
     takeOperator(event);
   } else if (event.target.id === "equal") {
@@ -32,55 +26,81 @@ calculatorButtons.addEventListener("click", (event) => {
       Operation.operator,
       Operation.currentValue
     );
+    Operation.previousValue = null;
     Operation.operator = "";
-    Operation.previousValue = "";
+    display.textContent = Operation.currentValue;
   }
 });
 
+clear.addEventListener("click", reset);
+
+//Auxiliary functions
+
+const add = (num1, num2) => num1 + num2;
+const subtract = (num1, num2) => num1 - num2;
+const multiply = (num1, num2) => num1 * num2;
+const divide = (num1, num2) => {
+  if (num2 === 0) {
+    reset();
+    return (display.textContent = "Can't divide by 0!");
+  }
+  return num1 / num2;
+};
+
 function operate(num1, op, num2) {
-  if (num1 === "") {
-    return num2;
-  } else if (num2 === "") {
-    return num1;
-  }
+  if (!op) return num2;
+  else if (op && num2 === null) return num1;
+  else
+    switch (op) {
+      case "+":
+        return add(num1, num2);
+      case "-":
+        return subtract(num1, num2);
 
-  let firstValue = Number(num1);
-  let secondValue = Number(num2);
+      case "/":
+        return divide(num1, num2);
 
-  switch (op) {
-    case "+":
-      return add(firstValue, secondValue).toString();
-    case "-":
-      return subtract(firstValue, secondValue).toString();
-    case "/":
-      return divide(firstValue, secondValue).toString();
-    case "*":
-      return multiply(firstValue, secondValue).toString();
-  }
-}
-
-function takeNumber(event) {
-  if (Operation.result !== "") {
-    Operation.previousValue = Operation.result;
-    Operation.currentValue = "";
-  }
-  Operation.currentValue += event.target.textContent;
+      case "*":
+        return multiply(num1, num2);
+    }
 }
 
 function takeOperator(event) {
   if (
-    Operation.previousValue !== "" &&
-    Operation.operator !== "" &&
-    Operation.currentValue !== ""
+    Operation.previousValue !== null &&
+    Operation.operator &&
+    Operation.currentValue !== null
   ) {
-    Operation.result = operate(
+    Operation.previousValue = operate(
       Operation.previousValue,
       Operation.operator,
       Operation.currentValue
     );
-    Operation.previousValue = Operation.result;
+    display.textContent = Operation.previousValue;
+    Operation.currentValue = null;
+  } else {
+    Operation.operator = event.target.textContent;
+    Operation.previousValue = Operation.currentValue;
+    Operation.currentValue = null;
   }
-  Operation.previousValue = Operation.currentValue;
-  Operation.currentValue = "";
-  Operation.operator = event.target.textContent;
+}
+
+function reset() {
+  Operation.currentValue = null;
+  Operation.previousValue = null;
+  Operation.operator = "";
+  display.textContent = 0;
+}
+
+function updateDisplay(event) {
+  if (
+    display.textContent.startsWith("0") ||
+    !Operation.currentValue ||
+    display.textContent === "Can't divide by 0!"
+  ) {
+    display.textContent = event.target.textContent;
+  } else if (event.target.classList.contains("digit")) {
+    display.textContent += event.target.textContent;
+  }
+  Operation.currentValue = Number(display.textContent);
 }
