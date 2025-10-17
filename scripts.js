@@ -18,6 +18,8 @@ const equal = document.querySelector("#equal");
 calculatorButtons.addEventListener("click", (event) => {
   if (event.target.classList.contains("digit")) {
     updateDisplay(event);
+  } else if (event.target.id === "decimalSeparator") {
+    takeDecimalSeparator();
   } else if (event.target.classList.contains("operator")) {
     takeOperator(event);
   } else if (event.target.id === "equal") {
@@ -94,8 +96,8 @@ function reset() {
 
 function updateDisplay(event) {
   if (
-    display.textContent.startsWith("0") ||
-    !Operation.currentValue ||
+    display.textContent === "0" ||
+    Operation.currentValue === null ||
     display.textContent === "Can't divide by 0!"
   ) {
     display.textContent = event.target.textContent;
@@ -103,4 +105,9 @@ function updateDisplay(event) {
     display.textContent += event.target.textContent;
   }
   Operation.currentValue = Number(display.textContent);
+}
+
+function takeDecimalSeparator(event) {
+  if (!display.textContent.includes(".")) display.textContent += ".";
+  if ((display.textContent = "0.")) Operation.currentValue = 0;
 }
