@@ -20,7 +20,7 @@ calculatorButtons.addEventListener("click", (event) => {
     updateDisplay(event);
   } else if (event.target.id === "delete") {
     deleteLastDigit(event);
-  } else if (event.target.id === "decimalSeparator") {
+  } else if (event.target.id === "decimal-separator") {
     takeDecimalSeparator();
   } else if (event.target.classList.contains("operator")) {
     takeOperator(event);
