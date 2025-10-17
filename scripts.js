@@ -18,6 +18,8 @@ const equal = document.querySelector("#equal");
 calculatorButtons.addEventListener("click", (event) => {
   if (event.target.classList.contains("digit")) {
     updateDisplay(event);
+  } else if (event.target.id === "delete") {
+    deleteLastDigit(event);
   } else if (event.target.id === "decimalSeparator") {
     takeDecimalSeparator();
   } else if (event.target.classList.contains("operator")) {
@@ -110,4 +112,12 @@ function updateDisplay(event) {
 function takeDecimalSeparator(event) {
   if (!display.textContent.includes(".")) display.textContent += ".";
   if ((display.textContent = "0.")) Operation.currentValue = 0;
+}
+
+function deleteLastDigit(event) {
+  display.textContent = display.textContent.substring(
+    0,
+    display.textContent.length - 1
+  );
+  Operation.currentValue = Number(display.textContent);
 }
