@@ -111,13 +111,15 @@ function updateDisplay(event) {
 
 function takeDecimalSeparator(event) {
   if (!display.textContent.includes(".")) display.textContent += ".";
-  if ((display.textContent = "0.")) Operation.currentValue = 0;
+  if (display.textContent === "0.") Operation.currentValue = 0;
 }
 
 function deleteLastDigit(event) {
-  display.textContent = display.textContent.substring(
-    0,
-    display.textContent.length - 1
-  );
-  Operation.currentValue = Number(display.textContent);
+  if (display.textContent !== "0") {
+    display.textContent = display.textContent.substring(
+      0,
+      display.textContent.length - 1
+    );
+    Operation.currentValue = Number(display.textContent);
+  }
 }
