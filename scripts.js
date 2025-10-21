@@ -115,11 +115,9 @@ function takeDecimalSeparator(event) {
 }
 
 function deleteLastDigit(event) {
-  if (display.textContent !== "0") {
-    display.textContent = display.textContent.substring(
-      0,
-      display.textContent.length - 1
-    );
-    Operation.currentValue = Number(display.textContent);
-  }
+  display.textContent =
+    display.textContent.length > 1
+      ? display.textContent.substring(0, display.textContent.length - 1)
+      : 0;
+  Operation.currentValue = Number(display.textContent);
 }
