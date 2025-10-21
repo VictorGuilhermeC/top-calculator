@@ -82,6 +82,7 @@ function takeOperator(event) {
     );
     display.textContent = Operation.previousValue;
     Operation.currentValue = null;
+    Operation.operator = event.target.textContent;
   } else {
     Operation.operator = event.target.textContent;
     Operation.previousValue = Operation.currentValue;
