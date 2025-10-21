@@ -8,6 +8,7 @@ const Operation = {
 
 const display = document.querySelector(".display");
 const calculatorButtons = document.querySelector(".calculator-buttons");
+const allButtons = document.querySelectorAll("button");
 const digits = document.querySelectorAll(".digit");
 const operators = document.querySelectorAll(".operator");
 const clear = document.querySelector("#clear");
@@ -37,6 +38,8 @@ calculatorButtons.addEventListener("click", (event) => {
 });
 
 clear.addEventListener("click", reset);
+
+display.addEventListener("keydown", keys);
 
 //Auxiliary functions
 
@@ -121,4 +124,20 @@ function deleteLastDigit(event) {
       ? display.textContent.substring(0, display.textContent.length - 1)
       : 0;
   Operation.currentValue = Number(display.textContent);
+}
+
+function keys(event) {
+  const btn = Array.from(allButtons).find((node) => {
+    switch (event.key) {
+      case "Escape":
+        return node.textContent === "Clear";
+      case "Enter":
+        return node.textContent === "=";
+      case "Backspace":
+        return node.textContent === "Del";
+      default:
+        return node.textContent === event.key;
+    }
+  });
+  if (btn) btn.click();
 }
