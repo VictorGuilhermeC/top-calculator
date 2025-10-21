@@ -1,0 +1,16 @@
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.calculator {
+  display: flex;
+  justify-content: center;
+  flex-flow: column wrap;
+  border: solid;
+  height: 700px;
+  width: 400px;
+}
