@@ -6,6 +6,7 @@ const state = {
 };
 
 const mainDisplay = document.querySelector("#main");
+const upperDisplay = document.querySelector("#upper");
 const buttons = document.querySelectorAll("button");
 const calculatorButtons = document.querySelector(".calculator-buttons");
 const clearBtn = document.querySelector("#clear");
@@ -28,6 +29,8 @@ clearBtn.addEventListener("click", (event) => {
   state.operator = "";
   state.current = state.previous = "0";
   state.wasEvaluated = false;
+
+  updateUpperDisplay("");
   updateMainDisplay();
 });
 
@@ -66,6 +69,7 @@ equalBtn.addEventListener("click", () => {
   state.operator = "";
   state.wasEvaluated = true;
 
+  updateUpperDisplay("");
   updateMainDisplay();
 });
 
@@ -81,7 +85,6 @@ function takeOperator(op) {
     }
 
     state.previous = result.toString();
-    state.current = state.previous;
   } else {
     state.previous = state.current;
   }
@@ -90,6 +93,7 @@ function takeOperator(op) {
   state.current = "0";
   state.wasEvaluated = false;
 
+  updateUpperDisplay(`${state.previous} ${state.operator}`);
   updateMainDisplay();
 }
 
@@ -148,17 +152,20 @@ function calculate() {
   return Number.isFinite(result) ? result : null;
 }
 
+function updateUpperDisplay(value = "") {
+  upperDisplay.textContent = value;
+}
+
 function updateMainDisplay(value = state.current) {
   mainDisplay.textContent = value;
 }
 
 function showError() {
   updateMainDisplay("Cannot divide by zero");
+  updateUpperDisplay("");
 
   state.previous = "0";
   state.current = "0";
   state.operator = "";
   state.wasEvaluated = false;
 }
-
-function updateUpperDisplay() {}
