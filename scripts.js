@@ -111,19 +111,35 @@ function takeDigit(num) {
 }
 
 function keys(event) {
-  const btn = Array.from(buttons).find((node) => {
-    switch (event.key) {
-      case "Escape":
-        return node.textContent === "Clear";
-      case "Enter":
-        return node.textContent === "=";
-      case "Backspace":
-        return node.textContent === "Del";
-      default:
-        return node.textContent === event.key;
-    }
-  });
-  if (btn) btn.click();
+  if (event.key >= "0" && event.key <= "9") {
+    takeDigit(event.key);
+    return;
+  }
+
+  if (["+", "-", "*", "/"].includes(event.key)) {
+    takeOperator(event.key);
+    return;
+  }
+
+  if (event.key === "." || event.key === "Decimal") {
+    sepBtn.click();
+    return;
+  }
+
+  if (event.key === "Enter" || event.key === "=") {
+    equalBtn.click();
+    return;
+  }
+
+  if (event.key === "Backspace") {
+    delBtn.click();
+    return;
+  }
+
+  if (event.key === "Escape") {
+    clearBtn.click();
+    return;
+  }
 }
 
 function calculate() {
