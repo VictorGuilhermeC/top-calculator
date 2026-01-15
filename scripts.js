@@ -1,12 +1,13 @@
-let previousInput = "0";
-let currentInput = "0";
-let operator = "";
+const state = {
+  previous: "0",
+  current: "0",
+  operator: "",
+  wasEvaluated: false,
+};
 
 const mainDisplay = document.querySelector("#main");
 const buttons = document.querySelectorAll("button");
 const calculatorButtons = document.querySelector(".calculator-buttons");
-const digits = document.querySelectorAll(".digit");
-const operators = document.querySelectorAll(".operator");
 const clearBtn = document.querySelector("#clear");
 const equalBtn = document.querySelector("#equal");
 const delBtn = document.querySelector("#delete");
@@ -16,58 +17,93 @@ const sepBtn = document.querySelector("#decimal-separator");
 
 calculatorButtons.addEventListener("click", (event) => {
   const target = event.target;
-  if (target.className === "digit") {
+  if (target.classList.contains("digit")) {
     takeDigit(target.textContent);
-  } else if (target.className === "operator") {
+  } else if (target.classList.contains("operator")) {
     takeOperator(target.textContent);
   }
 });
 
 clearBtn.addEventListener("click", (event) => {
-  operator = "";
-  currentInput = previousInput = "0";
-  updateMainDisplay("0");
+  state.operator = "";
+  state.current = state.previous = "0";
+  state.wasEvaluated = false;
+  updateMainDisplay();
 });
 
 delBtn.addEventListener("click", (event) => {
-  currentInput = `${currentInput.slice(0, currentInput.length - 1)}`;
-  if (currentInput === "") currentInput = "0";
-  updateMainDisplay(currentInput);
+  if (state.wasEvaluated) return;
+  state.current = state.current.slice(0, state.current.length - 1);
+  if (state.current === "") state.current = "0";
+  updateMainDisplay();
 });
 
-sepBtn.addEventListener("click", (event) => {
-  if (currentInput.includes(".")) return;
-  else currentInput += ".";
-  updateMainDisplay(currentInput);
+sepBtn.addEventListener("click", () => {
+  if (state.wasEvaluated) {
+    state.current = "0.";
+    state.wasEvaluated = false;
+    updateMainDisplay();
+    return;
+  }
+
+  if (!state.current.includes(".")) {
+    state.current += ".";
+    updateMainDisplay();
+  }
 });
 
-equalBtn.addEventListener("click", (event) => {
-  if (operator === "") return;
-  let result = calculate().toString();
-  previousInput = result;
-  currentInput = "0";
-  operator = "";
-  updateMainDisplay(result);
+equalBtn.addEventListener("click", () => {
+  if (!state.operator) return;
+
+  const result = calculate();
+  if (result === null) {
+    showError();
+    return;
+  }
+
+  state.current = result.toString();
+  state.previous = "0";
+  state.operator = "";
+  state.wasEvaluated = true;
+
+  updateMainDisplay();
 });
 
 //Auxiliary functions
-mainDisplay.addEventListener("keydown", keys);
+document.addEventListener("keydown", keys);
 
 function takeOperator(op) {
-  if (operator !== "") {
-    previousInput = `${calculate()}`;
-    updateMainDisplay(previousInput);
+  if (state.operator !== "" && !state.wasEvaluated) {
+    const result = calculate();
+    if (result === null) {
+      showError();
+      return;
+    }
+
+    state.previous = result.toString();
+    state.current = state.previous;
   } else {
-    previousInput = currentInput;
+    state.previous = state.current;
   }
-  currentInput = "0";
-  operator = op;
+
+  state.operator = op;
+  state.current = "0";
+  state.wasEvaluated = false;
+
+  updateMainDisplay();
 }
 
 function takeDigit(num) {
-  if (currentInput === "0") currentInput = num;
-  else currentInput += num;
-  updateMainDisplay(currentInput);
+  if (state.wasEvaluated) {
+    state.current = num;
+    state.wasEvaluated = false;
+  } else if (state.current === "0") {
+    state.current = num;
+  } else {
+    state.current += num;
+  }
+
+  updateMainDisplay();
 }
 
 function keys(event) {
@@ -87,28 +123,42 @@ function keys(event) {
 }
 
 function calculate() {
-  let prevNum = parseFloat(previousInput);
-  let currNum = parseFloat(currentInput);
+  const prevNum = parseFloat(state.previous);
+  const currNum = parseFloat(state.current);
 
-  switch (operator) {
+  let result;
+
+  switch (state.operator) {
     case "+":
-      return prevNum + currNum;
-
+      result = prevNum + currNum;
+      break;
     case "-":
-      return prevNum - currNum;
-
+      result = prevNum - currNum;
+      break;
     case "*":
-      return prevNum * currNum;
-
+      result = prevNum * currNum;
+      break;
     case "/":
-      if (currNum === 0) {
-        mainDisplay.textContent = "Cannot divide by zero!";
-        return;
-      }
-      return prevNum / currNum;
+      result = prevNum / currNum;
+      break;
+    default:
+      return null;
   }
+
+  return Number.isFinite(result) ? result : null;
 }
 
-function updateMainDisplay(input) {
-  mainDisplay.textContent = input;
+function updateMainDisplay(value = state.current) {
+  mainDisplay.textContent = value;
 }
+
+function showError() {
+  updateMainDisplay("Cannot divide by zero");
+
+  state.previous = "0";
+  state.current = "0";
+  state.operator = "";
+  state.wasEvaluated = false;
+}
+
+function updateUpperDisplay() {}
