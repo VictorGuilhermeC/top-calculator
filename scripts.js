@@ -98,12 +98,15 @@ function takeOperator(op) {
 }
 
 function takeDigit(num) {
+  const maxDigits = 12;
+
   if (state.wasEvaluated) {
     state.current = num;
     state.wasEvaluated = false;
   } else if (state.current === "0") {
     state.current = num;
   } else {
+    if (state.current.length >= maxDigits) return;
     state.current += num;
   }
 
