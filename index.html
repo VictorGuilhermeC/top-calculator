@@ -4,33 +4,53 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>The Odin Project: Calculator</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="styles.css" />
     <script src="scripts.js" defer></script>
   </head>
   <body>
-    <div class="calculator">
-      <div class="display" id="upper"></div>
-      <div class="display" id="main" tabindex="0">0</div>
-      <div class="calculator-buttons">
-        <button class="digit" id="seven">7</button>
-        <button class="digit" id="eight">8</button>
-        <button class="digit" id="nine">9</button>
-        <button class="operator" id="addition">+</button>
-        <button class="digit" id="four">4</button>
-        <button class="digit" id="five">5</button>
-        <button class="digit" id="six">6</button>
-        <button class="operator" id="subtraction">-</button>
-        <button class="digit" id="one">1</button>
-        <button class="digit" id="two">2</button>
-        <button class="digit" id="three">3</button>
-        <button class="operator" id="multiplication">*</button>
-        <button id="decimal-separator">.</button>
-        <button class="digit" id="zero">0</button>
-        <button id="equal">=</button>
-        <button class="operator" id="division">/</button>
-        <button id="clear">Clear</button>
-        <button id="delete">Del</button>
+    <header>
+      <h1 class="title">A Really Simple Calculator</h1>
+    </header>
+    <main>
+      <div class="calculator">
+        <div class="display" id="upper"></div>
+        <div class="display" id="main" tabindex="0">0</div>
+        <div class="calculator-buttons">
+          <button class="digit" id="seven">7</button>
+          <button class="digit" id="eight">8</button>
+          <button class="digit" id="nine">9</button>
+          <button class="operator" id="addition">+</button>
+          <button class="digit" id="four">4</button>
+          <button class="digit" id="five">5</button>
+          <button class="digit" id="six">6</button>
+          <button class="operator" id="subtraction">-</button>
+          <button class="digit" id="one">1</button>
+          <button class="digit" id="two">2</button>
+          <button class="digit" id="three">3</button>
+          <button class="operator" id="multiplication">*</button>
+          <button id="decimal-separator">.</button>
+          <button class="digit" id="zero">0</button>
+          <button id="equal">=</button>
+          <button class="operator" id="division">/</button>
+          <button id="clear">Clear</button>
+          <button id="delete">Del</button>
+        </div>
       </div>
-    </div>
+    </main>
+    <footer>
+      <p>
+        Built and Designed by
+        <a
+          href="https://github.com/VictorGuilhermeVC/top-calculator"
+          target="_blank"
+        >
+          Victor Guilherme Vasconcellos</a
+        >
+      </p>
+    </footer>
   </body>
 </html>
