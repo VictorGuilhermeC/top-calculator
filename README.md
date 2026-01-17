@@ -1,6 +1,6 @@
 # Calculator — The Odin Project
 
-This simple, functional calculator built with HTML, CSS, and JavaScript, was developed as part of ![The Odin Project – Foundations Course](https://www.theodinproject.com/lessons/foundations-calculator).
+This simple, functional calculator built with HTML, CSS, and JavaScript, was developed as part of [The Odin Project – Foundations Course](https://www.theodinproject.com/lessons/foundations-calculator).
 
 This project focuses on implementing core JavaScript logic, semantic HTML and CSS styling to build a clean, responsive interface.
 
